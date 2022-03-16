@@ -64,6 +64,11 @@ class SwitchTableViewCell: UITableViewCell {
         let imageSize: CGFloat = size / 1.5
         iconImageView.frame = CGRect(x: (size - imageSize)/2, y: (size - imageSize)/2, width: imageSize, height: imageSize)
         
+        mySwitch.sizeToFit()
+        mySwitch.frame = CGRect(x: contentView.frame.size.width - mySwitch.frame.size.width - 20,
+                                y: (contentView.frame.size.height - mySwitch.frame.size.height) / 2,
+                                width: mySwitch.frame.size.width,
+                                height: mySwitch.frame.size.height)
         
         label.frame = CGRect(x: 25 + iconContainer.frame.size.width,
                              y: 0,
@@ -76,11 +81,13 @@ class SwitchTableViewCell: UITableViewCell {
         iconImageView.image = nil
         label.text = nil
         iconContainer.backgroundColor = nil
+        mySwitch.isOn = false
     }
     
-    public func configure(with model: SettingsOption) {
+    public func configure(with model: SettingsSwitchOption) {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
+        mySwitch.isOn =  model.isOn
     }
 }

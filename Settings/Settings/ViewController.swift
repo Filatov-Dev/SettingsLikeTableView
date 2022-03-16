@@ -41,6 +41,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(SettingsTableViewCell.self,
                        forCellReuseIdentifier: SettingsTableViewCell.identifier)
+        table.register(SwitchTableViewCell.self,
+                       forCellReuseIdentifier: SwitchTableViewCell.identifier)
+        
         
         return table
     }()
@@ -60,6 +63,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     private func configure() {
+        models.append(Section(title: "Airplane Mode", option: [
+            .switchCell(model: SettingsSwitchOption(title: "Airplane Mode", icon: UIImage(systemName: "airplane"), iconBackgroundColor: .systemMint, handler: {
+                
+            }, isOn: true)),
+            
+            
+        ]))
+        
         models.append(Section(title: "General", option: [
             .staticCell(model: SettingsOption(title: "Wifi", icon: UIImage(systemName: "wifi"), iconBackgroundColor: .systemPink) {  }),
             .staticCell(model: SettingsOption(title: "Bluetooth", icon: UIImage(systemName: "bluetooth"), iconBackgroundColor: .systemBlue) {  }),
@@ -110,8 +121,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             cell.configure(with: model)
             return cell
-        case .switchCell(_):
-            return UITableViewCell()
+        case .switchCell(let model):
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: SwitchTableViewCell.identifier,
+                for: indexPath
+            ) as? SwitchTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            return cell
         }
     }
     
